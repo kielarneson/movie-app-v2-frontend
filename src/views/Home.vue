@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="movie">
+    <form @submit.prevent="showMovie()">
+      <input class="search" type="text" v-model="searchQuery" placeholder="search movies" />
+    </form>
+
+    <div class="show-movie">
+      <h1>{{ movie.Title }}</h1>
+      <img :src="`${movie.Poster}`" alt="" />
+    </div>
   </div>
 </template>
 
+<style></style>
+
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import axios from "axios";
 
 export default {
-  name: "Home",
-  components: {
-    HelloWorld,
+  data: function () {
+    return {
+      searchQuery: "",
+      movie: {},
+    };
+  },
+  created: function () {},
+  mounted: function () {},
+  methods: {
+    showMovie: function () {
+      axios.get(`/movies/${this.searchQuery}`).then((response) => {
+        console.log("Show movie", response);
+        this.movie = response.data;
+      });
+    },
   },
 };
 </script>
